@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:recipe_app/screens/auth/auth_provider.dart';
 import 'package:recipe_app/screens/dashboard/search_recipe_screen.dart';
 import 'package:recipe_app/screens/dashboard/recipe_screen.dart';
 
@@ -19,6 +21,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
@@ -30,7 +34,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Navigator.pushNamed(context, '/profile');
               }
               if (value == 'logout') {
-                Navigator.pushReplacementNamed(context, '/login');
+                auth.logout();
+                Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
               }
             },
             itemBuilder: (context) {
