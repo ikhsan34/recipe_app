@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:recipe_app/screens/auth/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,9 +15,15 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 5), (() {
-      if(!mounted) return;
-      Navigator.pushReplacementNamed(context, '/login');
+    Future.delayed(const Duration(seconds: 5), (() async {
+      final bool isLoggedIn = await Provider.of<AuthProvider>(context, listen: false).isLoggedIn();
+      if (isLoggedIn) {
+        if(!mounted) return;
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      } else {
+        if(!mounted) return;
+        Navigator.pushReplacementNamed(context, '/login');
+      }
     }));
   }
 

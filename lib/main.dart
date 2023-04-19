@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_app/screens/auth/auth_provider.dart';
 import 'package:recipe_app/screens/auth/login_screen.dart';
 import 'package:recipe_app/screens/auth/register_screen.dart';
 import 'package:recipe_app/screens/dashboard/dashboard_screen.dart';
@@ -7,7 +8,7 @@ import 'package:recipe_app/screens/profile_screen.dart';
 import 'package:recipe_app/screens/recipe/recipe_provider.dart';
 import 'package:recipe_app/screens/splash_screen.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider(create: (context) => RecipeProvider())
+        ChangeNotifierProvider(create: (context) => RecipeProvider()),
+        ChangeNotifierProvider(create: (context) => AuthProvider())
       ],
       child: MaterialApp(
         theme: ThemeData(
