@@ -14,7 +14,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
 
   int currentIndex = 0;
-  final List screens = [
+  final List<Widget> screens = [
     const RecipeScreen(),
     const SearchRecipeScreen()
   ];
@@ -65,7 +65,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
           )
         ],
       ),
-      body: screens[currentIndex],
+      body: IndexedStack(
+        index: currentIndex,
+        children: screens,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (value) {
