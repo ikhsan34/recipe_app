@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/screens/auth/auth_provider.dart';
-import 'package:recipe_app/screens/dashboard/search_recipe_screen.dart';
-import 'package:recipe_app/screens/dashboard/recipe_screen.dart';
+import 'package:recipe_app/screens/dashboard/recipe/search_recipe_screen.dart';
+import 'package:recipe_app/screens/dashboard/recipe/recipe_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
