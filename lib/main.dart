@@ -50,10 +50,10 @@ class MyApp extends StatelessWidget {
         },
         onGenerateRoute: (settings) {
           if (settings.name == '/detail_recipe') {
-            final args = settings.arguments as String;
+            final args = settings.arguments as int;
             return MaterialPageRoute(
               builder: (context) {
-                return DetailRecipeScreen(recipeName: args);
+                return DetailRecipeScreen(index: args);
               },
             );
           }
