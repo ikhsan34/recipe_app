@@ -21,7 +21,6 @@ class RecipeApi {
           final json = jsonEncode(item['recipe']);
           return RecipeModel.fromJson(json: json);
         }).toList();
-        // print(result[0]['recipe']);
         return recipes;
       }
     } catch (e) {
