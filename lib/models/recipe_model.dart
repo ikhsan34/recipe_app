@@ -5,6 +5,7 @@ class RecipeModel {
   final String recipeId;
   final String name;
   final String imgUrl;
+  final double calories;
   final List<Ingredients> ingredients;
   final String recipeSource;
   final String sourceUrl;
@@ -13,6 +14,7 @@ class RecipeModel {
     required this.recipeId, 
     required this.name, 
     required this.imgUrl, 
+    required this.calories,
     required this.ingredients,
     required this.recipeSource,
     required this.sourceUrl
@@ -25,6 +27,7 @@ class RecipeModel {
       recipeId: data['uri'].toString().substring(43),
       name: data['label'],
       imgUrl: data['image'],
+      calories: data['calories'],
       ingredients: ingredients.map((item) {
         return Ingredients(
           text: item['text'],
