@@ -15,7 +15,7 @@ class _InstructionScreenState extends State<InstructionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Instruction'),
+        title: const Text('Instructions'),
       ),
       body: InAppWebView(
         initialUrlRequest: URLRequest(url: Uri.parse(widget.sourceUrl)),

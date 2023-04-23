@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/models/recipe_model.dart';
-import 'package:recipe_app/screens/dashboard/recipe/instruction_screen.dart';
-import 'package:recipe_app/screens/dashboard/recipe/recipe_provider.dart';
+import 'package:recipe_app/screens/auth/auth_provider.dart';
+import 'package:recipe_app/screens/dashboard/recipe/services/recipe_firestore.dart';
+import 'package:recipe_app/screens/dashboard/recipe/services/recipe_provider.dart';
 
 class DetailRecipeScreen extends StatelessWidget {
   final int index;
@@ -13,6 +15,12 @@ class DetailRecipeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     final RecipeModel recipe = Provider.of<RecipeProvider>(context).recipes[index];
+    final User user = Provider.of<AuthProvider>(context).user!;
+    final APIState state = Provider.of<RecipeProvider>(context).apiState;
+
+    void setAPIState(APIState state) {
+      Provider.of<RecipeProvider>(context, listen: false).setAPIState(state);
+    }
 
     List<TableRow> ingredientsRow() {
 
@@ -54,6 +62,7 @@ class DetailRecipeScreen extends StatelessWidget {
       }
       return list;
     }
+    
 
     return Scaffold(
       body: CustomScrollView(
@@ -155,6 +164,43 @@ class DetailRecipeScreen extends StatelessWidget {
                         child: const Text('Instructions'),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Actions
+                  const Text(
+                    'Actions',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500
+                    ),
+                  ),
+                  const Divider(),
+                  SizedBox(
+                    width: double.infinity,
+                    child: state == APIState.loading
+                    ? SpinKitCircle(
+                      color: Theme.of(context).colorScheme.primary,
+                    )
+                    : ElevatedButton(
+                      style: ButtonStyle(
+                        fixedSize: MaterialStateProperty.all(const Size.fromHeight(20))
+                      ),
+                      onPressed: () async {
+                        setAPIState(APIState.loading);
+                        ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snackBar(String text) {
+                          return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text), duration: const Duration(seconds: 3),));
+                        }
+
+                        final String result = await RecipeFirestore(uid: user.uid).addRecipe(recipe: recipe);
+                        if (result == 'success') {
+                          snackBar('Recipe saved successfully');
+                        } else {
+                          snackBar('Save failed, please try again');
+                        }
+                        setAPIState(APIState.none);
+                      },
+                      child: const Text('Save Recipe'),
+                    ),
                   )
                 ],
               ),

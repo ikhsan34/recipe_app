@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_app/models/recipe_model.dart';
 import 'package:recipe_app/screens/auth/auth_provider.dart';
 import 'package:recipe_app/screens/dashboard/recipe/search_recipe_screen.dart';
 import 'package:recipe_app/screens/dashboard/recipe/recipe_screen.dart';
+import 'package:recipe_app/screens/dashboard/recipe/services/recipe_firestore.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -14,14 +16,18 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
 
   int currentIndex = 0;
-  final List<Widget> screens = [
-    const RecipeScreen(),
-    const SearchRecipeScreen()
-  ];
   
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthProvider>(context);
+    final List<Widget> screens = [
+    StreamProvider<List<RecipeModel>>.value(
+      initialData: const [],
+      value: RecipeFirestore(uid: auth.user!.uid).recipes,
+      child: const RecipeScreen()
+    ),
+    const SearchRecipeScreen()
+  ];
 
     return Scaffold(
       appBar: AppBar(

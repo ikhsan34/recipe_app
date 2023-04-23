@@ -15,7 +15,7 @@ class RecipeProvider extends ChangeNotifier {
 
   List<RecipeModel> get recipes => _recipes;
 
-  void searchRecipe(String keyword) async {
+  Future<void> searchRecipe(String keyword) async {
     setAPIState(APIState.loading);
     final result = await RecipeApi.searchRecipes(keyword);
     if (result != null) {
