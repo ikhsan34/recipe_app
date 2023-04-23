@@ -24,7 +24,8 @@ class RecipeModel {
     final data = jsonDecode(json.toString());
     final List ingredients = data['ingredients'];
     return RecipeModel(
-      recipeId: data['uri'].toString().substring(43),
+      //recipeId: data['uri'].toString().substring(43),
+      recipeId: data['uri'].toString(),
       name: data['label'],
       imgUrl: data['image'],
       calories: data['calories'],
