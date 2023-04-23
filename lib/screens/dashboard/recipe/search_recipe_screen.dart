@@ -79,7 +79,7 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                   },
                   child: Card(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                       child: Row(
                         children: [
                           ClipRRect(
@@ -92,28 +92,34 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                             ),
                           ),
                           const SizedBox(width: 20),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                recipe.name, 
-                                style: const TextStyle(
-                                  letterSpacing: 1.5,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  recipe.name,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    letterSpacing: 1.5,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 5),
-                              Row(
-                                children: [
-                                  const Text('Recipe by: '),
-                                  Text(
-                                    recipe.recipeSource,
-                                    style: const TextStyle(
-                                      fontStyle: FontStyle.italic 
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
+                                const SizedBox(height: 5),
+                                Row(
+                                  children: [
+                                    const Text('Recipe by: '),
+                                    Expanded(
+                                      child: Text(
+                                        recipe.recipeSource,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontStyle: FontStyle.italic 
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
                           )
                         ],
                       ),
