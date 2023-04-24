@@ -6,7 +6,7 @@ class RecipeFirestore {
   final String uid;
   RecipeFirestore({ required this.uid });
 
-  final CollectionReference recipeCollection = FirebaseFirestore.instance.collection('recipes');
+  final CollectionReference recipeCollection = FirebaseFirestore.instance.collection('users');
 
   Future<String> addRecipe({required RecipeModel recipe}) async {
 
@@ -33,7 +33,7 @@ class RecipeFirestore {
     };
 
     try {
-      await recipeCollection.doc(uid).collection('recipe').add(recipeToMap);
+      await recipeCollection.doc(uid).collection('recipes').add(recipeToMap);
       return 'success';
     } catch (e) {
       print(e);
@@ -43,7 +43,7 @@ class RecipeFirestore {
 
   Future<String> deleteRecipe({required String docId}) async {
     try {
-      await recipeCollection.doc(uid).collection('recipe').doc(docId).delete();
+      await recipeCollection.doc(uid).collection('recipes').doc(docId).delete();
       return 'success';
     } catch (e) {
       print(e);
@@ -79,9 +79,9 @@ class RecipeFirestore {
   }
 
   // Stream Data
-  Stream<List<RecipeModel>> get recipes => recipeCollection.doc(uid).collection('recipe').snapshots().map(recipeListFromSnapshot);
+  Stream<List<RecipeModel>> get recipes => recipeCollection.doc(uid).collection('recipes').snapshots().map(recipeListFromSnapshot);
 
   // Get one time Data
-  Future<List<RecipeModel>> get savedRecipes => recipeCollection.doc(uid).collection('recipe').get().then(recipeListFromSnapshot);
+  Future<List<RecipeModel>> get savedRecipes => recipeCollection.doc(uid).collection('recipes').get().then(recipeListFromSnapshot);
 
 }
