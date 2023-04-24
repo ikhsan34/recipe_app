@@ -62,6 +62,11 @@ class RecipeProvider extends ChangeNotifier {
     return false;
   }
 
+  void disposeRecipe() {
+    _recipes = [];
+    savedRecipes = [];
+  }
+
   void setAPIState(APIState state) {
     apiState = state;
     notifyListeners();
