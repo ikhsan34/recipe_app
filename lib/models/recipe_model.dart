@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class RecipeModel {
-
+  final String? docId;
   final String recipeId;
   final String name;
   final String imgUrl;
@@ -11,6 +11,7 @@ class RecipeModel {
   final String sourceUrl;
 
   RecipeModel({
+    required this.docId,
     required this.recipeId, 
     required this.name, 
     required this.imgUrl, 
@@ -24,6 +25,7 @@ class RecipeModel {
     final data = jsonDecode(json.toString());
     final List ingredients = data['ingredients'];
     return RecipeModel(
+      docId: null,
       recipeId: data['uri'].toString().substring(43),
       name: data['label'],
       imgUrl: data['image'],

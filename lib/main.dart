@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_app/arguments/detail_recipe_screen_arguments.dart';
+import 'package:recipe_app/models/recipe_model.dart';
 import 'package:recipe_app/screens/auth/auth_provider.dart';
 import 'package:recipe_app/screens/auth/login_screen.dart';
 import 'package:recipe_app/screens/auth/register_screen.dart';
@@ -7,7 +9,7 @@ import 'package:recipe_app/screens/dashboard/dashboard_screen.dart';
 import 'package:recipe_app/screens/dashboard/recipe/detail_recipe_screen.dart';
 import 'package:recipe_app/screens/dashboard/recipe/instruction_screen.dart';
 import 'package:recipe_app/screens/profile_screen.dart';
-import 'package:recipe_app/screens/dashboard/recipe/recipe_provider.dart';
+import 'package:recipe_app/screens/dashboard/recipe/services/recipe_provider.dart';
 import 'package:recipe_app/screens/splash_screen.dart';
 
 void main() async {
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => RecipeProvider()),
-        ChangeNotifierProvider(create: (context) => AuthProvider())
+        ChangeNotifierProvider(create: (context) => AuthProvider()),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -51,10 +53,10 @@ class MyApp extends StatelessWidget {
         },
         onGenerateRoute: (settings) {
           if (settings.name == '/detail_recipe') {
-            final args = settings.arguments as int;
+            final args = settings.arguments as DetailRecipeScreenArguments;
             return MaterialPageRoute(
               builder: (context) {
-                return DetailRecipeScreen(index: args);
+                return DetailRecipeScreen(recipe: args.recipe, isSearching: args.isSearching);
               },
             );
           }
@@ -67,6 +69,7 @@ class MyApp extends StatelessWidget {
               },
             );
           }
+          return null;
         },
       ),
     );
