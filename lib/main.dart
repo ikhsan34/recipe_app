@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_app/arguments/detail_recipe_screen_arguments.dart';
+import 'package:recipe_app/screens/auth/auth_provider.dart';
 import 'package:recipe_app/screens/auth/login_screen.dart';
 import 'package:recipe_app/screens/auth/register_screen.dart';
 import 'package:recipe_app/screens/dashboard/dashboard_screen.dart';
+import 'package:recipe_app/screens/dashboard/recipe/detail_recipe_screen.dart';
+import 'package:recipe_app/screens/dashboard/recipe/instruction_screen.dart';
 import 'package:recipe_app/screens/profile_screen.dart';
-import 'package:recipe_app/screens/recipe/recipe_provider.dart';
+import 'package:recipe_app/screens/dashboard/recipe/services/recipe_provider.dart';
 import 'package:recipe_app/screens/splash_screen.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -18,7 +22,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider(create: (context) => RecipeProvider())
+        ChangeNotifierProvider(create: (context) => RecipeProvider()),
+        ChangeNotifierProvider(create: (context) => AuthProvider()),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -44,6 +49,26 @@ class MyApp extends StatelessWidget {
           '/register': (context) => const RegisterScreen(),
           '/dashboard': (context) => const DashboardScreen(),
           '/profile': (context) => const ProfileScreen()
+        },
+        onGenerateRoute: (settings) {
+          if (settings.name == '/detail_recipe') {
+            final args = settings.arguments as DetailRecipeScreenArguments;
+            return MaterialPageRoute(
+              builder: (context) {
+                return DetailRecipeScreen(recipe: args.recipe, isSearching: args.isSearching);
+              },
+            );
+          }
+
+          if (settings.name == '/instruction_screen') {
+            final args = settings.arguments as String;
+            return MaterialPageRoute(
+              builder: (context) {
+                return InstructionScreen(sourceUrl: args);
+              },
+            );
+          }
+          return null;
         },
       ),
     );

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_app/screens/dashboard/search_recipe_screen.dart';
-import 'package:recipe_app/screens/dashboard/recipe_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:recipe_app/screens/auth/auth_provider.dart';
+import 'package:recipe_app/screens/dashboard/recipe/search_recipe_screen.dart';
+import 'package:recipe_app/screens/dashboard/recipe/recipe_screen.dart';
+import 'package:recipe_app/screens/dashboard/recipe/services/recipe_provider.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -12,13 +15,15 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
 
   int currentIndex = 0;
-  final List screens = [
-    const RecipeScreen(),
-    const SearchRecipeScreen()
-  ];
   
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthProvider>(context);
+    final List<Widget> screens = [
+    const RecipeScreen(),
+    const SearchRecipeScreen()
+  ];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
@@ -30,7 +35,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Navigator.pushNamed(context, '/profile');
               }
               if (value == 'logout') {
-                Navigator.pushReplacementNamed(context, '/login');
+                auth.logout();
+                Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+                Provider.of<RecipeProvider>(context, listen: false).disposeRecipe();
               }
             },
             itemBuilder: (context) {
@@ -60,7 +67,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
           )
         ],
       ),
-      body: screens[currentIndex],
+      body: IndexedStack(
+        index: currentIndex,
+        children: screens,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (value) {
