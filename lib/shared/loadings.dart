@@ -10,5 +10,11 @@ class Loadings {
     );
   }
 
+  static Widget simpleCircleLoading(BuildContext context) {
+    return SpinKitCircle(
+      color: Theme.of(context).colorScheme.primary,
+    );
+  } 
+
 }
 

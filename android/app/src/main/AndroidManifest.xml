@@ -2,6 +2,7 @@
     package="com.example.recipe_app">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
+        android:hardwareAccelerated="false"
         android:label="recipe_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

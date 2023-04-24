@@ -14,14 +14,14 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
 
   int currentIndex = 0;
-  final List<Widget> screens = [
-    const RecipeScreen(),
-    const SearchRecipeScreen()
-  ];
   
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthProvider>(context);
+    final List<Widget> screens = [
+    const RecipeScreen(),
+    const SearchRecipeScreen()
+  ];
 
     return Scaffold(
       appBar: AppBar(
