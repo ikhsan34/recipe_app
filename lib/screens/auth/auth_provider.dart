@@ -74,4 +74,23 @@ class AuthProvider extends ChangeNotifier {
     return false;
   }
 
+  Future<bool> editProfile({
+    required String name,
+    required String email,
+    required String password
+  }) async {
+
+    try {
+      await user?.updateDisplayName(name);
+      await user?.updateEmail(email);
+      if (password.isNotEmpty) {
+        await user?.updatePassword(password);
+      }
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
 }
