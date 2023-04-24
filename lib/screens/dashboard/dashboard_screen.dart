@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:recipe_app/screens/auth/auth_provider.dart';
 import 'package:recipe_app/screens/dashboard/recipe/search_recipe_screen.dart';
 import 'package:recipe_app/screens/dashboard/recipe/recipe_screen.dart';
+import 'package:recipe_app/screens/dashboard/recipe/services/recipe_provider.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -36,6 +37,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               if (value == 'logout') {
                 auth.logout();
                 Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+                Provider.of<RecipeProvider>(context, listen: false).disposeRecipe();
               }
             },
             itemBuilder: (context) {
