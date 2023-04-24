@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/models/recipe_model.dart';
 import 'package:recipe_app/screens/dashboard/recipe/services/recipe_provider.dart';
-
-ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snackBar(BuildContext context, String text) {
-  return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text), duration: const Duration(seconds: 3),));
-}
+import 'package:recipe_app/shared/snakbar.dart';
 
 Widget saveRecipeButton({required BuildContext context, required RecipeModel recipe}) => ElevatedButton(
   style: ButtonStyle(
