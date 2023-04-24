@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_app/arguments/detail_recipe_screen_arguments.dart';
 import 'package:recipe_app/models/recipe_model.dart';
 import 'package:recipe_app/screens/auth/auth_provider.dart';
 import 'package:recipe_app/screens/auth/login_screen.dart';
@@ -52,10 +53,10 @@ class MyApp extends StatelessWidget {
         },
         onGenerateRoute: (settings) {
           if (settings.name == '/detail_recipe') {
-            final args = settings.arguments as RecipeModel;
+            final args = settings.arguments as DetailRecipeScreenArguments;
             return MaterialPageRoute(
               builder: (context) {
-                return DetailRecipeScreen(recipe: args);
+                return DetailRecipeScreen(recipe: args.recipe, isSearching: args.isSearching);
               },
             );
           }

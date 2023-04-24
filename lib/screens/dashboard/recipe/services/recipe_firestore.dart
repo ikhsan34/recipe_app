@@ -41,8 +41,14 @@ class RecipeFirestore {
     }
   }
 
-  Future<void> deleteRecipe({required String docId}) async {
-    await recipeCollection.doc(uid).collection('recipe').doc(docId).delete();
+  Future<String> deleteRecipe({required String docId}) async {
+    try {
+      await recipeCollection.doc(uid).collection('recipe').doc(docId).delete();
+      return 'success';
+    } catch (e) {
+      print(e);
+      return 'failed';
+    }
   }
 
   List<RecipeModel> recipeListFromSnapshot(QuerySnapshot snapshot) {
@@ -50,6 +56,7 @@ class RecipeFirestore {
       final Map recipe = document.data() as Map;
       final List ingredients = recipe['ingredients'];
       return RecipeModel(
+        docId: document.id,
         recipeId: recipe['recipeId'], 
         name: recipe['name'], 
         imgUrl: recipe['imgUrl'], 
