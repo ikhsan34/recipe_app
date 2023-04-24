@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:recipe_app/models/recipe_model.dart';
 import 'package:recipe_app/screens/dashboard/recipe/components/recipe_list_tile.dart';
 import 'package:recipe_app/screens/dashboard/recipe/services/recipe_provider.dart';
+import 'package:recipe_app/shared/loadings.dart';
 
 class RecipeScreen extends StatefulWidget {
   const RecipeScreen({super.key});
@@ -24,6 +25,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
   @override
   Widget build(BuildContext context) {
 
+    final APIState state = Provider.of<RecipeProvider>(context).apiState;
     final List<RecipeModel> savedRecipes = Provider.of<RecipeProvider>(context).savedRecipes;
 
     return SingleChildScrollView(
@@ -39,7 +41,9 @@ class _RecipeScreenState extends State<RecipeScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            savedRecipes.isEmpty
+            state == APIState.loading
+            ? Loadings.fadingCircle()
+            : savedRecipes.isEmpty
             ? const Text('You haven\'t saved any recipe yet, try search some.')
             : RecipeListTile(recipes: savedRecipes)
           ]
