@@ -43,14 +43,17 @@ class _DetailRecipeScreenState extends State<DetailRecipeScreen> {
             expandedHeight: 250,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(widget.recipe.name),
-              background: CachedNetworkImage(
-                imageUrl: widget.recipe.imgUrl,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                color: Colors.grey,
-                colorBlendMode: BlendMode.modulate,
-                placeholder: (context, url) => SpinKitCubeGrid(color: Theme.of(context).colorScheme.primary),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+              background: Hero(
+                tag: '${widget.recipe.recipeId} + ${widget.isSearching}',
+                child: CachedNetworkImage(
+                  imageUrl: widget.recipe.imgUrl,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  color: Colors.grey,
+                  colorBlendMode: BlendMode.modulate,
+                  placeholder: (context, url) => SpinKitCubeGrid(color: Theme.of(context).colorScheme.primary),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
               ),
             ),
           ),
