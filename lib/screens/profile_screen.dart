@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isEditing = false;
   bool changePassword = false;
   bool isLoading = false;
+  double opacity = 0;
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -35,6 +38,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     getUser();
+  }
+
+  void submitEditProfile(BuildContext context) async {
+    setState(() {
+    isLoading = true;
+    });
+    final bool result = await Provider.of<AuthProvider>(context, listen: false).editProfile(
+      name: nameController.text.trim(), 
+      email: emailController.text.trim(), 
+      password: passwordController.text
+    );
+    if (result) {
+      if(!mounted) return;
+      snackBar(context, 'Edit profile success, please re-loggin');
+      Future.delayed(const Duration(seconds: 3), () {
+        Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+        Provider.of<AuthProvider>(context, listen: false).logout();
+        Provider.of<RecipeProvider>(context, listen: false).disposeRecipe();
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      if(!mounted) return;
+      snackBar(context, 'Edit profile failed, please check your internet connection');
+    }
   }
 
   @override
@@ -135,72 +164,69 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    isEditing == false
-                    ? const SizedBox()
-                    : Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            const Text('Change password?'),
-                            Switch(
-                              value: changePassword, 
-                              onChanged: (value) {
-                                setState(() {
-                                  changePassword = value;
-                                  passwordController.text = '';
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                        changePassword == false
-                        ? const SizedBox()
-                        : TextFormField(
-                          validator: (value) => Validator.validatePassword(password: value),
-                          controller: passwordController,
-                          enabled: isEditing,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            labelText: 'New password',
-                            filled: true,
-                            border: InputBorder.none
+                    AnimatedOpacity(
+                      opacity: isEditing ? 1 : 0,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const Text('Change password?'),
+                              Switch(
+                                value: changePassword, 
+                                onChanged: !isEditing ? null : (value) {
+                                  setState(() {
+                                    changePassword = value;
+                                    passwordController.text = '';
+                                  });
+                                },
+                              ),
+                            ],
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        isLoading
-                        ? Loadings.simpleCircleLoading(context)
-                        : ElevatedButton(
-                          onPressed: () async {
-                            if (formKey.currentState!.validate()) {
-                              setState(() {
-                              isLoading = true;
-                              });
-                              final bool result = await Provider.of<AuthProvider>(context, listen: false).editProfile(
-                                name: nameController.text.trim(), 
-                                email: emailController.text.trim(), 
-                                password: passwordController.text
-                              );
-                              if (result) {
-                                if(!mounted) return;
-                                snackBar(context, 'Edit profile success, please re-loggin');
-                                Future.delayed(const Duration(seconds: 3), () {
-                                  Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
-                                  Provider.of<AuthProvider>(context, listen: false).logout();
-                                  Provider.of<RecipeProvider>(context, listen: false).disposeRecipe();
-                                });
-                              } else {
-                                setState(() {
-                                  isLoading = false;
-                                });
-                                if(!mounted) return;
-                                snackBar(context, 'Edit profile failed, please check your internet connection');
-                              }
-                            }
-                          },
-                          child: const Text('Save Edit'),
-                        )
-                      ],
+                          SizedBox(
+                            height: 200,
+                            child: Stack(
+                              alignment: Alignment.topCenter,
+                              children: [
+                                AnimatedOpacity(
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
+                                  opacity: changePassword ? 1 : 0,
+                                  child: TextFormField(
+                                    validator: (value) => Validator.validatePassword(password: value),
+                                    controller: passwordController,
+                                    enabled: isEditing,
+                                    obscureText: true,
+                                    decoration: const InputDecoration(
+                                      labelText: 'New password',
+                                      filled: true,
+                                      border: InputBorder.none
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                isLoading
+                                ? Loadings.simpleCircleLoading(context)
+                                : AnimatedPositioned(
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
+                                  top: changePassword ? 80 : 0,
+                                  child: ElevatedButton(
+                                    onPressed: !isEditing ? null : () async {
+                                      if (formKey.currentState!.validate()) {
+                                        submitEditProfile(context);
+                                      }
+                                    },
+                                    child: const Text('Save Edit'),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),
