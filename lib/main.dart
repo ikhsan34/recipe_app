@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_app/models/recipe_model.dart';
 import 'package:recipe_app/screens/auth/auth_provider.dart';
 import 'package:recipe_app/screens/auth/login_screen.dart';
 import 'package:recipe_app/screens/auth/register_screen.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => RecipeProvider()),
-        ChangeNotifierProvider(create: (context) => AuthProvider())
+        ChangeNotifierProvider(create: (context) => AuthProvider()),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -51,10 +52,10 @@ class MyApp extends StatelessWidget {
         },
         onGenerateRoute: (settings) {
           if (settings.name == '/detail_recipe') {
-            final args = settings.arguments as int;
+            final args = settings.arguments as RecipeModel;
             return MaterialPageRoute(
               builder: (context) {
-                return DetailRecipeScreen(index: args);
+                return DetailRecipeScreen(recipe: args);
               },
             );
           }
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
               },
             );
           }
+          return null;
         },
       ),
     );

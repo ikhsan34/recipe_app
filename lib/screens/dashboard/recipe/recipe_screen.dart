@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/models/recipe_model.dart';
 import 'package:recipe_app/screens/dashboard/recipe/components/recipe_list_tile.dart';
+import 'package:recipe_app/screens/dashboard/recipe/services/recipe_provider.dart';
 
 class RecipeScreen extends StatefulWidget {
   const RecipeScreen({super.key});
@@ -13,9 +14,17 @@ class RecipeScreen extends StatefulWidget {
 class _RecipeScreenState extends State<RecipeScreen> {
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<RecipeProvider>(context, listen: false).getSavedRecipes();
+  });
+  }
+
+  @override
   Widget build(BuildContext context) {
 
-    final recipes = Provider.of<List<RecipeModel>>(context);
+    final List<RecipeModel> savedRecipes = Provider.of<RecipeProvider>(context).savedRecipes;
 
     return SingleChildScrollView(
       child: Padding(
@@ -30,7 +39,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            RecipeListTile(recipes: recipes)
+            RecipeListTile(recipes: savedRecipes)
           ]
         ),
       ),

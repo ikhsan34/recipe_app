@@ -4,7 +4,6 @@ import 'package:recipe_app/models/recipe_model.dart';
 class RecipeFirestore {
 
   final String uid;
-
   RecipeFirestore({ required this.uid });
 
   final CollectionReference recipeCollection = FirebaseFirestore.instance.collection('recipes');
@@ -34,7 +33,7 @@ class RecipeFirestore {
     };
 
     try {
-      final DocumentReference result = await recipeCollection.doc(uid).collection('recipe').add(recipeToMap);
+      await recipeCollection.doc(uid).collection('recipe').add(recipeToMap);
       return 'success';
     } catch (e) {
       print(e);
@@ -74,5 +73,8 @@ class RecipeFirestore {
 
   // Stream Data
   Stream<List<RecipeModel>> get recipes => recipeCollection.doc(uid).collection('recipe').snapshots().map(recipeListFromSnapshot);
+
+  // Get one time Data
+  Future<List<RecipeModel>> get savedRecipes => recipeCollection.doc(uid).collection('recipe').get().then(recipeListFromSnapshot);
 
 }

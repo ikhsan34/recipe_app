@@ -21,7 +21,7 @@ class RecipeListTile extends StatelessWidget {
             Navigator.pushNamed(
               context, 
               '/detail_recipe',
-              arguments: index
+              arguments: recipe
             );
           },
           child: Card(
