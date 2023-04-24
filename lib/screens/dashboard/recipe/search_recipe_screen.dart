@@ -62,7 +62,7 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
             : recipes.isEmpty
             ? const Text('Search some recipes')
             : state == APIState.none
-            ? RecipeListTile(recipes: recipes)
+            ? RecipeListTile(recipes: recipes, isSearching: true)
             : const Text('Failed to get data, make sure internet is available')
           ],
         ),

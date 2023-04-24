@@ -37,6 +37,31 @@ class RecipeProvider extends ChangeNotifier {
     setAPIState(APIState.none);
   }
 
+  Future<bool> saveRecipe(RecipeModel recipe) async {
+    setAPIState(APIState.loading);
+    final User user = FirebaseAuth.instance.currentUser!;
+    final String result = await RecipeFirestore(uid: user.uid).addRecipe(recipe: recipe);
+    if (result == 'success') {
+      savedRecipes.add(recipe);
+      setAPIState(APIState.none);
+      return true;
+    }
+    setAPIState(APIState.failed);
+    return false;
+  }
+  Future<bool> deleteRecipe(RecipeModel recipe) async {
+    setAPIState(APIState.loading);
+    final User user = FirebaseAuth.instance.currentUser!;
+    final String result = await RecipeFirestore(uid: user.uid).deleteRecipe(docId: recipe.docId!);
+    if (result == 'success') {
+      savedRecipes.remove(recipe);
+      setAPIState(APIState.none);
+      return true;
+    }
+    setAPIState(APIState.failed);
+    return false;
+  }
+
   void setAPIState(APIState state) {
     apiState = state;
     notifyListeners();

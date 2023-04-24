@@ -1,12 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:recipe_app/arguments/detail_recipe_screen_arguments.dart';
 import 'package:recipe_app/models/recipe_model.dart';
 
 class RecipeListTile extends StatelessWidget {
   
   final List<RecipeModel> recipes;
-  const RecipeListTile({super.key, required this.recipes});
+  final bool isSearching;
+  const RecipeListTile({super.key, required this.recipes, this.isSearching = false});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class RecipeListTile extends StatelessWidget {
             Navigator.pushNamed(
               context, 
               '/detail_recipe',
-              arguments: recipe
+              arguments: DetailRecipeScreenArguments(recipe: recipe, isSearching: isSearching)
             );
           },
           child: Card(

@@ -39,7 +39,9 @@ class _RecipeScreenState extends State<RecipeScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            RecipeListTile(recipes: savedRecipes)
+            savedRecipes.isEmpty
+            ? const Text('You haven\'t saved any recipe yet, try search some.')
+            : RecipeListTile(recipes: savedRecipes)
           ]
         ),
       ),
