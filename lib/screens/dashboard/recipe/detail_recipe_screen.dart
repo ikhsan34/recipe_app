@@ -5,65 +5,31 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/models/recipe_model.dart';
 import 'package:recipe_app/screens/auth/auth_provider.dart';
+import 'package:recipe_app/screens/dashboard/recipe/components/ingredients_table.dart';
 import 'package:recipe_app/screens/dashboard/recipe/services/recipe_firestore.dart';
 import 'package:recipe_app/screens/dashboard/recipe/services/recipe_provider.dart';
 
 class DetailRecipeScreen extends StatelessWidget {
-  final int index;
-  const DetailRecipeScreen({ Key? key, required this.index }) : super(key: key);
+  final RecipeModel recipe;
+  const DetailRecipeScreen({ Key? key, required this.recipe }) : super(key: key);
 
   @override
   Widget build(BuildContext context){
-    final RecipeModel recipe = Provider.of<RecipeProvider>(context).recipes[index];
     final User user = Provider.of<AuthProvider>(context).user!;
     final APIState state = Provider.of<RecipeProvider>(context).apiState;
+    final List<RecipeModel> savedRecipes = Provider.of<RecipeProvider>(context).savedRecipes;
+
+    bool isSaved() {
+      if (savedRecipes.contains(recipe)) {
+        return true;
+      }
+      return false;
+    }
 
     void setAPIState(APIState state) {
       Provider.of<RecipeProvider>(context, listen: false).setAPIState(state);
     }
-
-    List<TableRow> ingredientsRow() {
-
-      List<TableRow> list = [
-        const TableRow(
-          children: [
-            Center(child: Text('No', style: TextStyle(fontWeight: FontWeight.w500))),
-            Text('Ingredients', style: TextStyle(fontWeight: FontWeight.w500)),
-            Text('Quantity', style: TextStyle(fontWeight: FontWeight.w500)),
-            Text('Measure', style: TextStyle(fontWeight: FontWeight.w500))
-          ]
-        )
-      ];
-      int counter = 1;
-      for(var ingredient in recipe.ingredients) {
-        list.add(
-          TableRow(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Center(child: Text(counter.toString())),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text(ingredient.food!),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text(ingredient.quantity.toString()),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text(ingredient.measure?? '-'),
-              ),
-            ]
-          )
-        );
-        counter++;
-      }
-      return list;
-    }
     
-
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -130,13 +96,7 @@ class DetailRecipeScreen extends StatelessWidget {
                     ),
                   ),
                   const Divider(),
-                  Table(
-                    columnWidths: const <int, TableColumnWidth>{
-                      0: FixedColumnWidth(30),
-                      1: FlexColumnWidth(2),
-                    },
-                    children: ingredientsRow()
-                  ),
+                  IngredientsTable(ingredients: recipe.ingredients),
                   const SizedBox(height: 20),
 
                   // Preparation
@@ -147,7 +107,6 @@ class DetailRecipeScreen extends StatelessWidget {
                     ),
                   ),
                   const Divider(),
-                  
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -181,6 +140,8 @@ class DetailRecipeScreen extends StatelessWidget {
                     ? SpinKitCircle(
                       color: Theme.of(context).colorScheme.primary,
                     )
+                    : isSaved()
+                    ? const Text('This recipe is already saved')
                     : ElevatedButton(
                       style: ButtonStyle(
                         fixedSize: MaterialStateProperty.all(const Size.fromHeight(20))
