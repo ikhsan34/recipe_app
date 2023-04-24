@@ -195,7 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   curve: Curves.easeInOut,
                                   opacity: changePassword ? 1 : 0,
                                   child: TextFormField(
-                                    validator: (value) => Validator.validatePassword(password: value),
+                                    validator: !changePassword ? null : (value) => Validator.validatePassword(password: value),
                                     controller: passwordController,
                                     enabled: isEditing,
                                     obscureText: true,
