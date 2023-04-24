@@ -1,18 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:recipe_app/screens/auth/auth_provider.dart';
+import 'package:recipe_app/shared/loadings.dart';
+import 'package:recipe_app/shared/styles.dart';
+import 'package:recipe_app/shared/validators.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+
+  final formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  bool isLoading = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
+    final auth = Provider.of<AuthProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
         title: const Text('Login'),
         elevation: 0,
       ),
-      body: SingleChildScrollView(
+      body: isLoading
+      ? Loadings.fadingCircle()
+      : SingleChildScrollView(
         child: Form(
+          key: formKey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
             child: Column(
@@ -31,48 +60,41 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(height: 50),
                 const Text('Email', style: TextStyle(color: Colors.white)),
                 TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'email',
-                    filled: true,
-                    fillColor: Colors.white,
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10)
-                      ),
-                    )
-                  ),
+                  validator: (value) => Validator.validateEmail(email: value),
+                  controller: emailController,
+                  decoration: emailInputDecoration
                 ),
                 const SizedBox(height: 20),
                 const Text('Password', style: TextStyle(color: Colors.white)),
                 TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'password',
-                    filled: true,
-                    fillColor: Colors.white,
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10)                    
-                      ),
-                    )
-                  ),
+                  validator: (value) => Validator.validatePassword(password: value),
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: passwordInputDecoration
                 ),
                 const SizedBox(height: 20),
                 Center(
                   child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondary),
-                      minimumSize: MaterialStateProperty.all(const Size.fromHeight(40))
-                    ),
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/dashboard');
+                    style: submitButtonStyle,
+                    onPressed: () async {
+                      if (formKey.currentState!.validate()) {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        bool result = await auth.signInUsingEmailPassword(email: emailController.text, password: passwordController.text);
+                        if (result) {
+                          if(!mounted) return;
+                          Navigator.pushReplacementNamed(context, '/dashboard');
+                        } else {
+                          if(!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Login failed, make sure email and password is correct.'))
+                          );
+                          setState(() {
+                            isLoading = false;
+                          });
+                        }
+                      }
                     },
                     child: const Text('Login'),
                   ),
