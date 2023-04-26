@@ -5,22 +5,8 @@ import 'package:recipe_app/screens/dashboard/recipe/components/recipe_list_tile.
 import 'package:recipe_app/screens/dashboard/recipe/services/recipe_provider.dart';
 import 'package:recipe_app/shared/loadings.dart';
 
-class RecipeScreen extends StatefulWidget {
+class RecipeScreen extends StatelessWidget {
   const RecipeScreen({super.key});
-
-  @override
-  State<RecipeScreen> createState() => _RecipeScreenState();
-}
-
-class _RecipeScreenState extends State<RecipeScreen> {
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<RecipeProvider>(context, listen: false).getSavedRecipes();
-  });
-  }
 
   @override
   Widget build(BuildContext context) {
