@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/screens/auth/auth_provider.dart';
 import 'package:recipe_app/shared/loadings.dart';
+import 'package:recipe_app/shared/snakbar.dart';
 import 'package:recipe_app/shared/styles.dart';
 import 'package:recipe_app/shared/validators.dart';
 
@@ -86,7 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
                         if (passwordController.text != confirmPasswordController.text) {
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Make sure confirmation password is correct')));
+                          snackBar(context, 'Make sure confirmation password is correct');
                         } else {
                           setState(() {
                             isLoading = true;
@@ -97,9 +98,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => false);
                           } else {
                             if(!mounted) return;
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Register failed, make sure email is not registered.'))
-                            );
+                            snackBar(context, 'Register failed, make sure email is not registered.');
                             setState(() {
                               isLoading = false;
                             });

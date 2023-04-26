@@ -15,14 +15,22 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
 
   int currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<RecipeProvider>(context, listen: false).getSavedRecipes();
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthProvider>(context);
     final List<Widget> screens = [
-    const RecipeScreen(),
-    const SearchRecipeScreen()
-  ];
+      const RecipeScreen(),
+      const SearchRecipeScreen()
+    ];
 
     return Scaffold(
       appBar: AppBar(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/screens/auth/auth_provider.dart';
 import 'package:recipe_app/shared/loadings.dart';
+import 'package:recipe_app/shared/snakbar.dart';
 import 'package:recipe_app/shared/styles.dart';
 import 'package:recipe_app/shared/validators.dart';
 
@@ -87,9 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.pushReplacementNamed(context, '/dashboard');
                         } else {
                           if(!mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Login failed, make sure email and password is correct.'))
-                          );
+                          snackBar(context, 'Login failed, make sure email and password is correct.');
                           setState(() {
                             isLoading = false;
                           });

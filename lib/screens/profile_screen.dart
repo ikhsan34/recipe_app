@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -64,6 +62,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if(!mounted) return;
       snackBar(context, 'Edit profile failed, please check your internet connection');
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
   }
 
   @override

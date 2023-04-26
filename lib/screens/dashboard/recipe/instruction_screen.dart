@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-class InstructionScreen extends StatefulWidget {
+class InstructionScreen extends StatelessWidget {
   final String sourceUrl;
   const InstructionScreen({super.key, required this.sourceUrl});
 
-  @override
-  State<InstructionScreen> createState() => _InstructionScreenState();
-}
-
-class _InstructionScreenState extends State<InstructionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +12,7 @@ class _InstructionScreenState extends State<InstructionScreen> {
         title: const Text('Instructions'),
       ),
       body: InAppWebView(
-        initialUrlRequest: URLRequest(url: Uri.parse(widget.sourceUrl)),
+        initialUrlRequest: URLRequest(url: Uri.parse(sourceUrl)),
       )
     );
   }
