@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -67,9 +65,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     final User user = Provider.of<AuthProvider>(context).user!;
+    final auth = Provider.of<AuthProvider>(context);
     final String name = user.displayName!;
     final String email = user.email!;
 
@@ -77,6 +84,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: const Text('Your Profile'),
         centerTitle: true,
+        actions: [
+          PopupMenuButton(
+            onSelected: (value) {
+              if (value == 'logout') {
+                auth.logout();
+                Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+                Provider.of<RecipeProvider>(context, listen: false).disposeRecipe();
+              }
+            },
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem(
+                  value: 'logout',
+                  child: Row(
+                    children: [
+                      Icon(Icons.logout, color: Colors.grey[600]),
+                      const SizedBox(width: 5),
+                      const Text('Logout')
+                    ],
+                  ),
+                ),
+              ];
+            },
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
