@@ -15,55 +15,32 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
 
   int currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<RecipeProvider>(context, listen: false).getSavedRecipes();
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<AuthProvider>(context);
     final List<Widget> screens = [
-    const RecipeScreen(),
-    const SearchRecipeScreen()
-  ];
+      const RecipeScreen(),
+      const SearchRecipeScreen()
+    ];
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
         centerTitle: true,
         actions: [
-          PopupMenuButton(
-            onSelected: (value) {
-              if (value == 'profile') {
-                Navigator.pushNamed(context, '/profile');
-              }
-              if (value == 'logout') {
-                auth.logout();
-                Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
-                Provider.of<RecipeProvider>(context, listen: false).disposeRecipe();
-              }
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/profile');
             },
-            itemBuilder: (context) {
-              return [
-                PopupMenuItem(
-                  value: 'profile',
-                  child: Row(
-                    children: [
-                      Icon(Icons.person, color: Colors.grey[600]),
-                      const SizedBox(width: 5),
-                      const Text('Profile')
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  value: 'logout',
-                  child: Row(
-                    children: [
-                      Icon(Icons.logout, color: Colors.grey[600]),
-                      const SizedBox(width: 5),
-                      const Text('Logout')
-                    ],
-                  ),
-                ),
-              ];
-            },
+            icon: const Icon(Icons.person),
           )
         ],
       ),
