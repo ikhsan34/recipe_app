@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:recipe_app/screens/auth/auth_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/shared/loadings.dart';
@@ -30,25 +31,31 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            'Recipe App',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              letterSpacing: 3,
-              color: Colors.white
-            ),
+    return Stack(
+      children: [
+        // Preload InAppWebView widget
+        const InAppWebView(),
+        Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Recipe App',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 3,
+                  color: Colors.white
+                ),
+              ),
+              const SizedBox(height: 10),
+              const Text('Recipes for your cooking', style: TextStyle(color: Colors.white)),
+              const SizedBox(height: 100),
+              Loadings.fadingCircle(),
+            ],
           ),
-          const SizedBox(height: 10),
-          const Text('Recipes for your cooking', style: TextStyle(color: Colors.white)),
-          const SizedBox(height: 100),
-          Loadings.fadingCircle(),
-        ],
-      ),
+        ),
+      ]
     );
   }
 }
