@@ -42,7 +42,7 @@ class RecipeProvider extends ChangeNotifier {
     final User user = FirebaseAuth.instance.currentUser!;
     final String result = await RecipeFirestore(uid: user.uid).addRecipe(recipe: recipe);
     if (result == 'success') {
-      savedRecipes.add(recipe);
+      await getSavedRecipes();
       setAPIState(APIState.none);
       return true;
     }
