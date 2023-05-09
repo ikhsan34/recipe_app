@@ -86,6 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: true,
         actions: [
           PopupMenuButton(
+            key: const Key('logout-button'),
             onSelected: (value) {
               if (value == 'logout') {
                 auth.logout();
@@ -96,6 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             itemBuilder: (context) {
               return [
                 PopupMenuItem(
+                  key: const Key('logout-button-menu'),
                   value: 'logout',
                   child: Row(
                     children: [

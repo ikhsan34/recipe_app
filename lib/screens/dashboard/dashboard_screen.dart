@@ -36,6 +36,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         centerTitle: true,
         actions: [
           IconButton(
+            key: const Key('profile-button'),
             onPressed: () {
               Navigator.pushNamed(context, '/profile');
             },
