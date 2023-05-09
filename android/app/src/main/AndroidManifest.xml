@@ -5,7 +5,8 @@
         android:hardwareAccelerated="false"
         android:label="recipe_app"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
         <provider
             android:name="com.pichillilorenzo.flutter_inappwebview.InAppWebViewFileProvider"
             android:authorities="${applicationId}.flutter_inappwebview.fileprovider"
