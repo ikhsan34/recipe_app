@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:recipe_app/models/recipe_model.dart';
 import 'package:recipe_app/screens/dashboard/recipe/components/action_buttons.dart';
 import 'package:recipe_app/screens/dashboard/recipe/components/ingredients_table.dart';
-import 'package:recipe_app/screens/dashboard/recipe/services/recipe_provider.dart';
+import 'package:recipe_app/screens/dashboard/recipe/recipe_provider.dart';
 import 'package:recipe_app/shared/loadings.dart';
 
 class DetailRecipeScreen extends StatefulWidget {

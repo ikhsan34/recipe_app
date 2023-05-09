@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/models/recipe_model.dart';
 import 'package:recipe_app/screens/dashboard/recipe/components/recipe_list_tile.dart';
-import 'package:recipe_app/screens/dashboard/recipe/services/recipe_provider.dart';
+import 'package:recipe_app/screens/dashboard/recipe/recipe_provider.dart';
 import 'package:recipe_app/shared/loadings.dart';
 
 class SearchRecipeScreen extends StatefulWidget {
@@ -36,6 +36,7 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
               children: [
                 Expanded(
                   child: TextFormField(
+                    key: const Key('search'),
                     controller: keywordController,
                     decoration: const InputDecoration(
                       icon: Icon(Icons.search),
@@ -47,6 +48,7 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                 ),
                 const SizedBox(width: 10),
                 ElevatedButton(
+                  key: const Key('search-button'),
                   onPressed: () {
                     FocusScope.of(context).unfocus();
                     Provider.of<RecipeProvider>(context, listen: false).searchRecipe(keywordController.text.trim());
