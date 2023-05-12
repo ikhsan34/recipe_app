@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/screens/auth/auth_provider.dart';
-import 'package:recipe_app/screens/dashboard/recipe/services/recipe_provider.dart';
+import 'package:recipe_app/screens/dashboard/recipe/recipe_provider.dart';
 import 'package:recipe_app/shared/loadings.dart';
 import 'package:recipe_app/shared/snakbar.dart';
 import 'package:recipe_app/shared/validators.dart';
@@ -86,6 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: true,
         actions: [
           PopupMenuButton(
+            key: const Key('logout-button'),
             onSelected: (value) {
               if (value == 'logout') {
                 auth.logout();
@@ -96,6 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             itemBuilder: (context) {
               return [
                 PopupMenuItem(
+                  key: const Key('logout-button-menu'),
                   value: 'logout',
                   child: Row(
                     children: [

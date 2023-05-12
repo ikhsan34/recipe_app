@@ -4,9 +4,12 @@ import 'package:recipe_app/models/recipe_model.dart';
 class RecipeFirestore {
 
   final String uid;
-  RecipeFirestore({ required this.uid });
+  final FirebaseFirestore firestore;
+  final CollectionReference recipeCollection;
+  RecipeFirestore({required this.firestore, required this.uid}) : recipeCollection = firestore.collection('users');
 
-  final CollectionReference recipeCollection = FirebaseFirestore.instance.collection('users');
+
+  // final CollectionReference recipeCollection = FirebaseFirestore.instance.collection('users');
 
   Future<String> addRecipe({required RecipeModel recipe}) async {
 

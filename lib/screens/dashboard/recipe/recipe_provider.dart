@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:recipe_app/models/api/recipe_api.dart';
@@ -33,16 +34,16 @@ class RecipeProvider extends ChangeNotifier {
   Future<void> getSavedRecipes() async {
     setAPIState(APIState.loading);
     final User user = FirebaseAuth.instance.currentUser!;
-    savedRecipes = await RecipeFirestore(uid: user.uid).savedRecipes;
+    savedRecipes = await RecipeFirestore(firestore: FirebaseFirestore.instance, uid: user.uid).savedRecipes;
     setAPIState(APIState.none);
   }
 
   Future<bool> saveRecipe(RecipeModel recipe) async {
     setAPIState(APIState.loading);
     final User user = FirebaseAuth.instance.currentUser!;
-    final String result = await RecipeFirestore(uid: user.uid).addRecipe(recipe: recipe);
+    final String result = await RecipeFirestore(firestore: FirebaseFirestore.instance, uid: user.uid).addRecipe(recipe: recipe);
     if (result == 'success') {
-      savedRecipes.add(recipe);
+      await getSavedRecipes();
       setAPIState(APIState.none);
       return true;
     }
@@ -52,7 +53,7 @@ class RecipeProvider extends ChangeNotifier {
   Future<bool> deleteRecipe(RecipeModel recipe) async {
     setAPIState(APIState.loading);
     final User user = FirebaseAuth.instance.currentUser!;
-    final String result = await RecipeFirestore(uid: user.uid).deleteRecipe(docId: recipe.docId!);
+    final String result = await RecipeFirestore(firestore: FirebaseFirestore.instance, uid: user.uid).deleteRecipe(docId: recipe.docId!);
     if (result == 'success') {
       savedRecipes.remove(recipe);
       setAPIState(APIState.none);

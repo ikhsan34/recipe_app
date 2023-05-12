@@ -61,6 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 50),
                 const Text('Email', style: TextStyle(color: Colors.white)),
                 TextFormField(
+                  key: const Key('email'),
                   validator: (value) => Validator.validateEmail(email: value),
                   controller: emailController,
                   decoration: emailInputDecoration
@@ -68,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 20),
                 const Text('Password', style: TextStyle(color: Colors.white)),
                 TextFormField(
+                  key: const Key('password'),
                   validator: (value) => Validator.validatePassword(password: value),
                   controller: passwordController,
                   obscureText: true,
@@ -76,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 20),
                 Center(
                   child: ElevatedButton(
+                    key: const Key('login-button'),
                     style: submitButtonStyle,
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {

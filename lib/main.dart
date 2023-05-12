@@ -8,7 +8,7 @@ import 'package:recipe_app/screens/dashboard/dashboard_screen.dart';
 import 'package:recipe_app/screens/dashboard/recipe/detail_recipe_screen.dart';
 import 'package:recipe_app/screens/dashboard/recipe/instruction_screen.dart';
 import 'package:recipe_app/screens/profile_screen.dart';
-import 'package:recipe_app/screens/dashboard/recipe/services/recipe_provider.dart';
+import 'package:recipe_app/screens/dashboard/recipe/recipe_provider.dart';
 import 'package:recipe_app/screens/splash_screen.dart';
 
 void main() async {

@@ -3,10 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/models/recipe_model.dart';
-import 'package:recipe_app/screens/dashboard/recipe/services/recipe_provider.dart';
+import 'package:recipe_app/screens/dashboard/recipe/recipe_provider.dart';
 import 'package:recipe_app/shared/snakbar.dart';
 
 Widget saveRecipeButton({required BuildContext context, required RecipeModel recipe}) => ElevatedButton(
+  key: const Key('save-button'),
   style: ButtonStyle(
     fixedSize: MaterialStateProperty.all(const Size.fromHeight(20))
   ),
@@ -22,6 +23,7 @@ Widget saveRecipeButton({required BuildContext context, required RecipeModel rec
 );
 
 Widget deleteRecipeButton({required BuildContext context, required RecipeModel recipe}) => ElevatedButton(
+  key: const Key('delete-button'),
   style: ButtonStyle(
     backgroundColor: MaterialStateProperty.all(Colors.red[400]),
     fixedSize: MaterialStateProperty.all(const Size.fromHeight(20))

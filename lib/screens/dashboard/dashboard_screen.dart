@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipe_app/screens/auth/auth_provider.dart';
 import 'package:recipe_app/screens/dashboard/recipe/search_recipe_screen.dart';
 import 'package:recipe_app/screens/dashboard/recipe/recipe_screen.dart';
-import 'package:recipe_app/screens/dashboard/recipe/services/recipe_provider.dart';
+import 'package:recipe_app/screens/dashboard/recipe/recipe_provider.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -37,6 +36,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         centerTitle: true,
         actions: [
           IconButton(
+            key: const Key('profile-button'),
             onPressed: () {
               Navigator.pushNamed(context, '/profile');
             },
@@ -57,10 +57,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
         },
         items: const [
           BottomNavigationBarItem(
+            tooltip: 'home-navbar',
             label: 'Home',
             icon: Icon(Icons.home)
           ),
           BottomNavigationBarItem(
+            tooltip: 'search-navbar',
             label: 'Search Recipe',
             icon: Icon(Icons.search)
           ),
